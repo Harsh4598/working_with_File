@@ -89,7 +89,7 @@ class _FormScreenState extends State<FormScreen> {
     final file = File(
         '$path/${(firstNameController.text).trim()} ${lastNameController.text.trim()}.txt');
     return file.writeAsString(
-        '${_pickedImage.path}\n${firstNameController.text.trim()}\n${lastNameController.text.trim()}\n${emailController.text.trim()}\n${dateCtl.text.trim()}\n${addtionalInfo.text.trim()}\n${selectedQualification.name}\n');
+        '${_pickedImage.path}\n${firstNameController.text.trim()}\n${lastNameController.text.trim()}\n${emailController.text.trim()}\n${dateCtl.text.trim()}\n${addtionalInfo.text.trim()}\n${selectedQualification.name}\n$images');
   }
 
   @override

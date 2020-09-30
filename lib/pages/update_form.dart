@@ -1,14 +1,10 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:save_file/model/qualification.dart';
 import 'package:save_file/widget/text_field.dart';
-
 import 'form_screen.dart';
 
 class UpdateFormScreen extends StatefulWidget {
@@ -21,10 +17,11 @@ class UpdateFormScreen extends StatefulWidget {
 
 class _UpdateFormScreenState extends State<UpdateFormScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<String> imagesDeails = List<String>(); //aditional images
+  //aditional images
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String directory;
   List<String> contents;
+  List<String> detailAddImage = List<String>();
   List file = new List();
   File _pickedImageDeails; //profile image
   var firstNameDeailsController,
@@ -43,7 +40,7 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
   @override
   void initState() {
     super.initState();
-    //readCounter();
+    readCounter();
     firstNameDeailsController = TextEditingController();
     lastNameDeailsController = TextEditingController();
     addtionalInfoDeailsController = TextEditingController();
@@ -79,33 +76,40 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
   Future<File> writeData(Qualification selectedQualification) async {
     final file = File(widget.file);
     return file.writeAsString(
-        '${_pickedImageDeails.path}\n${firstNameDeailsController.text}\n${lastNameDeailsController.text}\n${emailDeailsController.text}\n${dateDeailsCtl.text}\n${addtionalInfoDeailsController.text}\n${selectedQualification.name}\n');
+        '${_pickedImageDeails.path}\n${firstNameDeailsController.text}\n${lastNameDeailsController.text}\n${emailDeailsController.text}\n${dateDeailsCtl.text}\n${addtionalInfoDeailsController.text}\n${selectedQualification.name}\n$detailAddImage');
   }
 
-  // Future<int> readCounter() async {
-  //   try {
-  //     final file = await File(widget.file);
+  Future<int> readCounter() async {
+    try {
+      final file = await File(widget.file);
 
-  //     // Read the file.
-  //     contents = await file.readAsLinesSync();
-  //     _pickedImageDeails = File(contents[0]);
-  //     firstNameDeailsController.text = contents[1];
-  //     lastNameDeailsController.text = contents[2];
-  //     emailDeailsController.text = contents[3];
-  //     dateDeailsCtl.text = contents[4];
-  //     addtionalInfoDeailsController.text = contents[5];
-  //     selectedQualificationDetails = contents[6];
-  //   } catch (e) {
-  //     // If encountering an error, return 0.
-  //     return 0;
-  //   }
-  // }
-  // Future<void> _listofFiles() async {
-  //   setState(() {
-  //     file = Directory("/storage/emulated/0/user_data").listSync();
-  //     //use your folder name insted of resume.
-  //   });
-  // }
+      // Read the file.
+      contents = await file.readAsLinesSync();
+      _pickedImageDeails = File(contents[0]);
+      firstNameDeailsController.text = contents[1];
+      lastNameDeailsController.text = contents[2];
+      emailDeailsController.text = contents[3];
+      dateDeailsCtl.text = contents[4];
+      addtionalInfoDeailsController.text = contents[5];
+      selectedQualificationDetails = contents[6];
+      if (contents[7].isNotEmpty) {
+        detailAddImage = (contents[7].split(','));
+        detailAddImage[0] = detailAddImage[0].substring(1);
+        detailAddImage.last =
+            detailAddImage.last.substring(0, detailAddImage.last.length - 1);
+      }
+    } catch (e) {
+      // If encountering an error, return 0.
+      return 0;
+    }
+  }
+
+  Future<void> _listofFiles() async {
+    setState(() {
+      file = Directory("/storage/emulated/0/user_data").listSync();
+      //use your folder name insted of resume.
+    });
+  }
 
   @override
   void dispose() {
@@ -143,6 +147,7 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
   @override
   Widget build(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
+
     return Scaffold(
       key: _scaffoldKey,
       //resizeToAvoidBottomInset: false,
@@ -371,7 +376,10 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
                           File file =
                               await ImagePicker.pickImage(source: imageSource);
                           if (file != null) {
-                            setState(() => imagesDeails.add(file.path));
+                            setState(() {
+                              detailAddImage.add(file.path);
+                              print(detailAddImage);
+                            });
                           }
                         } else {
                           FilePickerResult result =
@@ -382,8 +390,11 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
                           );
 
                           if (result != null) {
-                            List<String> files = result.paths;
-                            setState(() => imagesDeails.addAll(files));
+                            List<String> filesPath = result.paths;
+
+                            setState(() {
+                              detailAddImage.addAll(filesPath);
+                            });
                           }
                         }
                       }
@@ -404,14 +415,14 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
                       )),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: imagesDeails.length,
+                    itemCount: detailAddImage != [] ? detailAddImage.length : 0,
                     itemBuilder: (context, index) {
                       //Asset asset = images[index];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Stack(
                           children: [
-                            Image.file(File(imagesDeails[index])),
+                            Image.file(File(detailAddImage[index].trim())),
                             Positioned(
                                 right: -10,
                                 top: -10,
@@ -422,7 +433,7 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        imagesDeails.removeAt(index);
+                                        detailAddImage.removeAt(index);
                                       });
                                     }))
                           ],
@@ -467,7 +478,7 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
                             emailDeailsController.clear();
                             addtionalInfoDeailsController.clear();
                             dateDeailsCtl.clear();
-                            imagesDeails.clear();
+                            detailAddImage.clear();
                             _pickedImageDeails = null;
                             setState(() {});
                             Navigator.of(context).pushReplacement(
