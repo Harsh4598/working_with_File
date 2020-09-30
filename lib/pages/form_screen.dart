@@ -20,7 +20,6 @@ class _FormScreenState extends State<FormScreen> {
   List<String> images = List<String>(); //aditional images
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String directory;
-  List file = new List();
   File _pickedImage; //profile image
   var firstNameController,
       lastNameController,
@@ -371,7 +370,6 @@ class _FormScreenState extends State<FormScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: images.length,
                     itemBuilder: (context, index) {
-                      //Asset asset = images[index];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Stack(
@@ -487,15 +485,6 @@ class _FormScreenState extends State<FormScreen> {
       ),
     );
   }
-
-  // Future buildShowDialog(BuildContext context) {
-  //   return showDialog(
-  //       barrierDismissible: false,
-  //       context: context,
-  //       builder: (_) {
-  //         return;
-  //       });
-  // }
 
   showSnackBar(String message) {
     final snackBar = SnackBar(content: Text(message));
