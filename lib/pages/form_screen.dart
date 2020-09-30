@@ -406,7 +406,7 @@ class _FormScreenState extends State<FormScreen> {
                       child: RaisedButton(
                         color: Colors.blue,
                         onPressed: () async {
-                          // _formKey.currentState.validate();
+                          print(images);
                           if (_pickedImage == null) {
                             return showSnackBar('please Add profile image');
                           }

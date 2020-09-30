@@ -95,6 +95,7 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
   //     dateDeailsCtl.text = contents[4];
   //     addtionalInfoDeailsController.text = contents[5];
   //     selectedQualificationDetails = contents[6];
+  //      print(contents[7]);
   //   } catch (e) {
   //     // If encountering an error, return 0.
   //     return 0;

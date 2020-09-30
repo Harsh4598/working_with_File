@@ -29,19 +29,6 @@ class _FormTextFormFieldState extends State<FormTextFormField> {
         onSaved: (newValue) {
           widget.controller = newValue;
         },
-        validator: (value) {
-          if (widget.name == "Email") {
-            bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(widget.controller.text);
-
-            if (emailValid == false) {
-              return "Please enter proper email address";
-            }
-          } else if (value.isEmpty) {
-            return "Please enter ${widget.name}";
-          }
-        },
         onFieldSubmitted: (value) {
           if (widget.focus == null) {
             FocusScope.of(context).requestFocus(FocusNode());
