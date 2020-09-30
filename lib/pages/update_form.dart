@@ -79,12 +79,12 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
         '${_pickedImageDeails.path}\n${firstNameDeailsController.text}\n${lastNameDeailsController.text}\n${emailDeailsController.text}\n${dateDeailsCtl.text}\n${addtionalInfoDeailsController.text}\n${selectedQualification.name}\n$detailAddImage');
   }
 
-  Future<int> readCounter() async {
+  Future<void> readCounter() async {
     try {
-      final file = await File(widget.file);
+      final file = File(widget.file);
 
       // Read the file.
-      contents = await file.readAsLinesSync();
+      contents = file.readAsLinesSync();
       _pickedImageDeails = File(contents[0]);
       firstNameDeailsController.text = contents[1];
       lastNameDeailsController.text = contents[2];
