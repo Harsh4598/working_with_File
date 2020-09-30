@@ -72,18 +72,18 @@ class _MyDialogState extends State<MyDialog> {
                           padding: const EdgeInsets.all(8.0),
                           child: GestureDetector(
                             onTap: () {
-                              // Navigator.of(context).pop();
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //         builder: (context) => UpdateFormScreen(
-                              //             file: file[index]
-                              //                 .toString()
-                              //                 .substring(
-                              //                     7,
-                              //                     file[index]
-                              //                             .toString()
-                              //                             .length -
-                              //                         1))));
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => UpdateFormScreen(
+                                          file: file[index]
+                                              .toString()
+                                              .substring(
+                                                  7,
+                                                  file[index]
+                                                          .toString()
+                                                          .length -
+                                                      1))));
                             },
                             child: Card(
                               elevation: 2,
@@ -100,12 +100,12 @@ class _MyDialogState extends State<MyDialog> {
                                     color: Colors.grey,
                                   ),
                                   onPressed: () {
-                                    // final dir = Directory(file[index]
-                                    //     .toString()
-                                    //     .substring(7,
-                                    //         file[index].toString().length - 1));
-                                    // dir.deleteSync(recursive: true);
-                                    // setState(() {});
+                                    final dir = Directory(file[index]
+                                        .toString()
+                                        .substring(7,
+                                            file[index].toString().length - 1));
+                                    dir.deleteSync(recursive: true);
+                                    setState(() {});
                                   },
                                 ),
                               ),
