@@ -17,10 +17,12 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<String> images = List<String>(); //aditional images
+  //aditional images
+  List<String> imagesPath = List<String>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String directory;
   List file = new List();
+
   File _pickedImage; //profile image
   var firstNameController,
       lastNameController,
@@ -89,7 +91,7 @@ class _FormScreenState extends State<FormScreen> {
     final file = File(
         '$path/${(firstNameController.text).trim()} ${lastNameController.text.trim()}.txt');
     return file.writeAsString(
-        '${_pickedImage.path}\n${firstNameController.text.trim()}\n${lastNameController.text.trim()}\n${emailController.text.trim()}\n${dateCtl.text.trim()}\n${addtionalInfo.text.trim()}\n${selectedQualification.name}\n');
+        '${_pickedImage.path}\n${firstNameController.text.trim()}\n${lastNameController.text.trim()}\n${emailController.text.trim()}\n${dateCtl.text.trim()}\n${addtionalInfo.text.trim()}\n${selectedQualification.name}\n$imagesPath');
   }
 
   @override
@@ -336,7 +338,9 @@ class _FormScreenState extends State<FormScreen> {
                           File file =
                               await ImagePicker.pickImage(source: imageSource);
                           if (file != null) {
-                            setState(() => images.add(file.path));
+                            setState(() {
+                              imagesPath.add(file.path);
+                            });
                           }
                         } else {
                           FilePickerResult result =
@@ -347,8 +351,12 @@ class _FormScreenState extends State<FormScreen> {
                           );
 
                           if (result != null) {
-                            List<String> files = result.paths;
-                            setState(() => images.addAll(files));
+                            List<File> files =
+                                result.paths.map((path) => File(path)).toList();
+                            List<String> filesPath = result.paths;
+                            setState(() {
+                              imagesPath.addAll(filesPath);
+                            });
                           }
                         }
                       }
@@ -369,14 +377,14 @@ class _FormScreenState extends State<FormScreen> {
                       )),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: images.length,
+                    itemCount: imagesPath.length,
                     itemBuilder: (context, index) {
                       //Asset asset = images[index];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Stack(
                           children: [
-                            Image.file(File(images[index])),
+                            Image.file(File(imagesPath[index])),
                             Positioned(
                                 right: -10,
                                 top: -10,
@@ -387,7 +395,7 @@ class _FormScreenState extends State<FormScreen> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        images.removeAt(index);
+                                        imagesPath.removeAt(index);
                                       });
                                     }))
                           ],
@@ -432,7 +440,7 @@ class _FormScreenState extends State<FormScreen> {
                             emailController.clear();
                             addtionalInfo.clear();
                             dateCtl.clear();
-                            images.clear();
+                            imagesPath.clear();
                             _selectedQualification =
                                 _dropdownMenuItems[0].value;
                             _pickedImage = null;
