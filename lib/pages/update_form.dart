@@ -43,7 +43,7 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
   @override
   void initState() {
     super.initState();
-    //readCounter();
+    readCounter();
     firstNameDeailsController = TextEditingController();
     lastNameDeailsController = TextEditingController();
     addtionalInfoDeailsController = TextEditingController();
@@ -82,30 +82,31 @@ class _UpdateFormScreenState extends State<UpdateFormScreen> {
         '${_pickedImageDeails.path}\n${firstNameDeailsController.text}\n${lastNameDeailsController.text}\n${emailDeailsController.text}\n${dateDeailsCtl.text}\n${addtionalInfoDeailsController.text}\n${selectedQualification.name}\n');
   }
 
-  // Future<int> readCounter() async {
-  //   try {
-  //     final file = await File(widget.file);
+  Future<int> readCounter() async {
+    try {
+      final file = await File(widget.file);
 
-  //     // Read the file.
-  //     contents = await file.readAsLinesSync();
-  //     _pickedImageDeails = File(contents[0]);
-  //     firstNameDeailsController.text = contents[1];
-  //     lastNameDeailsController.text = contents[2];
-  //     emailDeailsController.text = contents[3];
-  //     dateDeailsCtl.text = contents[4];
-  //     addtionalInfoDeailsController.text = contents[5];
-  //     selectedQualificationDetails = contents[6];
-  //   } catch (e) {
-  //     // If encountering an error, return 0.
-  //     return 0;
-  //   }
-  // }
-  // Future<void> _listofFiles() async {
-  //   setState(() {
-  //     file = Directory("/storage/emulated/0/user_data").listSync();
-  //     //use your folder name insted of resume.
-  //   });
-  // }
+      // Read the file.
+      contents = await file.readAsLinesSync();
+      _pickedImageDeails = File(contents[0]);
+      firstNameDeailsController.text = contents[1];
+      lastNameDeailsController.text = contents[2];
+      emailDeailsController.text = contents[3];
+      dateDeailsCtl.text = contents[4];
+      addtionalInfoDeailsController.text = contents[5];
+      selectedQualificationDetails = contents[6];
+    } catch (e) {
+      // If encountering an error, return 0.
+      return 0;
+    }
+  }
+
+  Future<void> _listofFiles() async {
+    setState(() {
+      file = Directory("/storage/emulated/0/user_data").listSync();
+      //use your folder name insted of resume.
+    });
+  }
 
   @override
   void dispose() {
